@@ -1,0 +1,37 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f6f8;
+    margin:40px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.1);
+}
+
+h1{
+    margin-top:0;
+    margin-bottom:25px;
+}
+
+.controls{
+    margin-bottom:20px;
+}
+
+#teamFilter{
+    padding:6px 10px;
+    font-size:15px;
+}
+
+table.dataTable thead{
+    background:#0b5aa5;
+    color:white;
+}
+
+table.dataTable tbody tr:hover{
+    background:#eef6ff;
+}
