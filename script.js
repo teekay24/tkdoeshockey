@@ -1,9 +1,7 @@
 Papa.parse("hockeycards.csv", {
 
     download: true,
-
     header: true,
-
     skipEmptyLines: true,
 
     complete: function(results){
@@ -15,43 +13,85 @@ Papa.parse("hockeycards.csv", {
             data: col
         }));
 
-        // Build table header
         columns.forEach(c=>{
             $("#cardsTable thead tr").append(`<th>${c.title}</th>`);
         });
 
+        const teamColumn = columns.findIndex(c => c.title === "Team");
+
         const table = $("#cardsTable").DataTable({
 
             data: data,
-
             columns: columns,
 
-            pageLength: 25,
-
+            paging: false,
+            info: true,
+            ordering: true,
+            searching: true,
             order: [],
 
-            deferRender: true
+            deferRender: true,
+            scrollY: "70vh",
+            scrollCollapse: true
 
         });
 
-        // Populate Team dropdown
-        const teams = [...new Set(data.map(x=>x.Team))]
-            .filter(Boolean)
-            .sort();
+        // Build unique team list
+        const teams = new Set();
 
-        teams.forEach(team=>{
+        data.forEach(row=>{
+
+            if(!row.Team) return;
+
+            row.Team.split("/").forEach(team=>{
+                teams.add(team.trim());
+            });
+
+        });
+
+        [...teams].sort().forEach(team=>{
+
             $("#teamFilter").append(
                 `<option value="${team}">${team}</option>`
             );
+
         });
 
-        // Team filter
+        // Contains filter
         $("#teamFilter").on("change", function(){
 
-            table
-                .column(columns.findIndex(c=>c.title==="Team"))
-                .search(this.value)
-                .draw();
+            const value = this.value;
+
+            $.fn.dataTable.ext.search = [];
+
+            if(value !== ""){
+
+                $.fn.dataTable.ext.search.push(function(settings,data){
+
+                    return data[teamColumn]
+                        .toLowerCase()
+                        .includes(value.toLowerCase());
+
+                });
+
+            }
+
+            table.draw();
+
+        });
+
+        // Clear Filters
+        $("#clearFilters").on("click",function(){
+
+            $("#teamFilter").val("");
+
+            table.search("");
+
+            $(".dataTables_filter input").val("");
+
+            $.fn.dataTable.ext.search = [];
+
+            table.draw();
 
         });
 
