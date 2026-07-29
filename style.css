@@ -35,3 +35,26 @@ table.dataTable thead{
 table.dataTable tbody tr:hover{
     background:#eef6ff;
 }
+
+.controls{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+#clearFilters{
+
+    background:#0b5aa5;
+    color:white;
+    border:none;
+    border-radius:5px;
+    padding:8px 16px;
+    cursor:pointer;
+}
+
+#clearFilters:hover{
+
+    background:#08457d;
+}
+
